@@ -7,11 +7,9 @@ import os
 # Setup logging
 logger = logging.getLogger()
 logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)  # NOTE: change logging level as required (i.e. DEBUG)
+logger.setLevel(logging.DEBUG)  # TODO: change logging level as required (e.g. INFO)
 
-
-# Initialize SDK clients and other shareable resources here
-# e.g. s3 = boto3.client('s3')
+# Initialize *thread-safe* SDK clients and other shareable resources here
 
 
 def lambda_handler(event, context):
@@ -21,9 +19,20 @@ def lambda_handler(event, context):
     logger.debug('Context: %s' % context)
     logger.debug('Event: %s' % event)
 
-    #
-    # ----- Main logic goes here -----
-    #
+    # Initialize boto3 clients here, not outside the lambda handler since boto3 is not thread-safe
+    # e.g. s3 = boto3.client('s3')
+
+    try:
+        #
+        # ----- Main logic goes here -----
+        #
+        pass  # TODO: Remove this when you add logic
+    except Exception as e:
+        logger.exception('Error caught: %s', e)
+        # TODO: Exception handling code here
+    finally:
+        # Clean-up code here
+        pass  # TODO: Remove this when you add logic
 
     logger.debug('Leaving lambda_handler().')
 
